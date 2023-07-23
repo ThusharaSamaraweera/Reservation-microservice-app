@@ -9,7 +9,7 @@ import { ReservationDocument, ReservationSchema } from './models/reservation.sch
   imports: [
     DatabaseModule,
     DatabaseModule.forfeature([{ name: ReservationDocument.name, schema: ReservationSchema }]),
-    LoggerModule
+    LoggerModule,
   ],
   controllers: [ReservationsController],
   providers: [ReservationsService, ReservationsRepository],
