@@ -15,7 +15,7 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
   const port = configService.get('AUTH_PORT');
   await app.listen(port, () => {
-    console.log(`🚀 Listening at http://localhost:${port}/auth`);
+    console.log(`🚀 Auth service listening at http://localhost:${port}`);
   });
 }
 bootstrap();
