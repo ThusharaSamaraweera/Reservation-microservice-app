@@ -8,19 +8,24 @@ import { Transport } from '@nestjs/microservices';
 
 async function bootstrap() {
   const app = await NestFactory.create(AuthModule);
-  app.use(cookieParser());
+  const configService = app.get(ConfigService);
+  app.use(cookieParser()); // parse cookies before the request reaches the controllers
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true, // remove unknown properties from DTOs
     }),
   );
-  app.useLogger(app.get(Logger));
-  const configService = app.get(ConfigService);
+  app.useLogger(app.get(Logger)); // use the pino logger created in the LoggerModule
+  // connect to the microservice
   app.connectMicroservice({
-    transport: Transport.TCP,
+    transport: Transport.TCP, // transport protocol
+    options: {
+      host: '0.0.0.0',
+      port: configService.get('AUTH_TCP_PORT'),
+    },
   });
-  await app.startAllMicroservices();
-  const port = configService.get('AUTH_PORT');
+  await app.startAllMicroservices(); // start the microservice
+  const port = configService.get('AUTH_HTTP_PORT');
   await app.listen(port, () => {
     console.log(`🚀 Auth service listening at http://localhost:${port}`);
   });
