@@ -3,7 +3,6 @@ import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { UsersService } from '../users/users.service';
-import { Request } from 'express';
 import { TokenPayload } from '../interfaces';
 
 @Injectable()
@@ -11,8 +10,9 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(configService: ConfigService, private readonly usersService: UsersService) {
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([
-        // Given a request object, extract the token from the cookie
-        (request: Request) => request?.cookies?.Authentication,
+        (request: any) =>
+          request?.cookies?.Authentication || // Get Jwt token from cookie for browser requests
+          request?.Authenticate, // Get Jwt token from message pattern for microservice requests
       ]),
       secretOrKey: configService.get('JWT_SECRET'),
     });
