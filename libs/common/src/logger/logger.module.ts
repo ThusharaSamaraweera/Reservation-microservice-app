@@ -8,11 +8,12 @@ import { LoggerModule as PinoLoggerModule } from 'nestjs-pino';
         transport: {
           target: 'pino-pretty',
           options: {
-            singleLine: false,
+            singleLine: true,
           },
         },
       },
     }),
   ],
+  exports: [PinoLoggerModule],
 })
 export class LoggerModule {}

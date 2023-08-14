@@ -1,4 +1,14 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+  Logger,
+} from '@nestjs/common';
 import { ReservationsService } from './reservations.service';
 import { CreateReservationDto } from './dto/create-reservation.dto';
 import { UpdateReservationDto } from './dto/update-reservation.dto';
@@ -11,6 +21,12 @@ export class ReservationsController {
   @UseGuards(JwtAuthGuard)
   @Post()
   create(@Body() createReservationDto: CreateReservationDto) {
+    // this.logger.log(
+    //   `Called create reservation controller: invoiceId - ${createReservationDto?.invoiceId}`,
+    // );
+    console.log(
+      `Called create reservation controller: invoiceId - ${createReservationDto?.invoiceId}`,
+    );
     return this.reservationsService.create(createReservationDto);
   }
 

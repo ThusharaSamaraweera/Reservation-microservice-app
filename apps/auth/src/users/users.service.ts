@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserRepository } from './user.repository';
 import * as bcrypt from 'bcryptjs';
@@ -6,6 +6,7 @@ import { GetUserDto } from './dto/get-user.dto';
 
 @Injectable()
 export class UsersService {
+  protected readonly logger: Logger;
   constructor(private readonly userRepository: UserRepository) {}
 
   async createUser(createUserDto: CreateUserDto) {
@@ -26,6 +27,7 @@ export class UsersService {
   }
 
   async getUser(getUserDto: GetUserDto) {
+    console.log(`Called get user service: id - ${getUserDto?._id}`);
     return this.userRepository.findOne(getUserDto);
   }
 

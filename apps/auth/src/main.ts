@@ -5,6 +5,7 @@ import { Logger } from 'nestjs-pino';
 import { ConfigService } from '@nestjs/config';
 import * as cookieParser from 'cookie-parser';
 import { Transport } from '@nestjs/microservices';
+import { AUTH_SERVICE } from '@app/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AuthModule);
@@ -15,12 +16,12 @@ async function bootstrap() {
       whitelist: true, // remove unknown properties from DTOs
     }),
   );
-  app.useLogger(app.get(Logger)); // use the pino logger created in the LoggerModule
+  app.useLogger(app.get(Logger)); // use the pino logger created
   // connect to the microservice
   app.connectMicroservice({
     transport: Transport.TCP, // transport protocol
     options: {
-      host: '0.0.0.0',
+      host: AUTH_SERVICE,
       port: configService.get('AUTH_TCP_PORT'),
     },
   });
