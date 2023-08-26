@@ -9,13 +9,13 @@ export class ReservationsService {
     private readonly reservationsRepository: ReservationsRepository, // private readonly logger: Logger,
   ) {}
 
-  create(createReservationDto: CreateReservationDto) {
+  create(createReservationDto: CreateReservationDto, userId: string) {
     // this.logger.log(`Creating reservation for user ${createReservationDto?.invoiceId}`);
     console.log(`Creating reservation for user ${createReservationDto?.invoiceId}`);
     return this.reservationsRepository.create({
       ...createReservationDto,
       timestamp: new Date(),
-      userId: '1',
+      userId,
     });
   }
 
