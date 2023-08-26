@@ -20,14 +20,21 @@ export class ReservationsService {
   }
 
   findAll() {
+    console.log(`Called find all reservations service`);
     return this.reservationsRepository.find({});
   }
 
   findOne(_id: string) {
+    console.log(`Called find one reservation service: id - ${_id}`);
     return this.reservationsRepository.findOne({ _id });
   }
 
   update(_id: string, updateReservationDto: UpdateReservationDto) {
+    console.log(
+      `Called update reservation service: id - ${_id} update - ${JSON.stringify(
+        updateReservationDto,
+      )}`,
+    );
     return this.reservationsRepository.findOneAndUpdate(
       { _id },
       {

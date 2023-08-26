@@ -21,9 +21,6 @@ export class ReservationsController {
   @UseGuards(JwtAuthGuard)
   @Post()
   create(@Body() createReservationDto: CreateReservationDto, @CurrentUser() user: UserDto) {
-    // this.logger.log(
-    //   `Called create reservation controller: invoiceId - ${createReservationDto?.invoiceId}`,
-    // );
     console.log(
       `Called create reservation controller: invoiceId - ${createReservationDto?.invoiceId}`,
     );
@@ -31,21 +28,25 @@ export class ReservationsController {
   }
 
   @Get()
+  @UseGuards(JwtAuthGuard)
   findAll() {
     return this.reservationsService.findAll();
   }
 
   @Get(':id')
+  @UseGuards(JwtAuthGuard)
   findOne(@Param('id') id: string) {
     return this.reservationsService.findOne(id);
   }
 
   @Patch(':id')
+  @UseGuards(JwtAuthGuard)
   update(@Param('id') id: string, @Body() updateReservationDto: UpdateReservationDto) {
     return this.reservationsService.update(id, updateReservationDto);
   }
 
   @Delete(':id')
+  @UseGuards(JwtAuthGuard)
   remove(@Param('id') id: string) {
     return this.reservationsService.remove(id);
   }
