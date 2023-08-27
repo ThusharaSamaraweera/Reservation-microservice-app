@@ -8,19 +8,24 @@ import {
   Delete,
   UseGuards,
   Logger,
+  Inject,
 } from '@nestjs/common';
 import { ReservationsService } from './reservations.service';
 import { CreateReservationDto } from './dto/create-reservation.dto';
 import { UpdateReservationDto } from './dto/update-reservation.dto';
-import { CurrentUser, JwtAuthGuard, UserDto } from '@app/common';
+import { CurrentUser, JwtAuthGuard, PAYMENT_SERVICE, UserDto } from '@app/common';
+import { ClientProxy } from '@nestjs/microservices';
 
 @Controller('reservations')
 export class ReservationsController {
-  constructor(private readonly reservationsService: ReservationsService) {}
+  constructor(
+    private readonly reservationsService: ReservationsService,
+    @Inject(PAYMENT_SERVICE) paymentService: ClientProxy,
+  ) {}
 
   @UseGuards(JwtAuthGuard)
   @Post()
-  create(@Body() createReservationDto: CreateReservationDto, @CurrentUser() user: UserDto) {
+  async create(@Body() createReservationDto: CreateReservationDto, @CurrentUser() user: UserDto) {
     console.log(
       `Called create reservation controller: invoiceId - ${createReservationDto?.invoiceId}`,
     );
@@ -29,19 +34,19 @@ export class ReservationsController {
 
   @Get()
   @UseGuards(JwtAuthGuard)
-  findAll() {
+  async findAll() {
     return this.reservationsService.findAll();
   }
 
   @Get(':id')
   @UseGuards(JwtAuthGuard)
-  findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string) {
     return this.reservationsService.findOne(id);
   }
 
   @Patch(':id')
   @UseGuards(JwtAuthGuard)
-  update(@Param('id') id: string, @Body() updateReservationDto: UpdateReservationDto) {
+  async update(@Param('id') id: string, @Body() updateReservationDto: UpdateReservationDto) {
     return this.reservationsService.update(id, updateReservationDto);
   }
 

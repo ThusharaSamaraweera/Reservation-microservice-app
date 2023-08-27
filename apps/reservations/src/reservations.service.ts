@@ -1,17 +1,15 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { CreateReservationDto } from './dto/create-reservation.dto';
 import { UpdateReservationDto } from './dto/update-reservation.dto';
 import { ReservationsRepository } from './reservations.repository';
 
 @Injectable()
 export class ReservationsService {
-  constructor(
-    private readonly reservationsRepository: ReservationsRepository, // private readonly logger: Logger,
-  ) {}
+  private readonly logger: Logger;
+  constructor(private readonly reservationsRepository: ReservationsRepository) {}
 
   create(createReservationDto: CreateReservationDto, userId: string) {
-    // this.logger.log(`Creating reservation for user ${createReservationDto?.invoiceId}`);
-    console.log(`Creating reservation for user ${createReservationDto?.invoiceId}`);
+    this.logger.log(`Creating reservation for user ${createReservationDto?.invoiceId}`);
     return this.reservationsRepository.create({
       ...createReservationDto,
       timestamp: new Date(),
@@ -20,17 +18,17 @@ export class ReservationsService {
   }
 
   findAll() {
-    console.log(`Called find all reservations service`);
+    this.logger.log(`Called find all reservations service`);
     return this.reservationsRepository.find({});
   }
 
   findOne(_id: string) {
-    console.log(`Called find one reservation service: id - ${_id}`);
+    this.logger.log(`Called find one reservation service: id - ${_id}`);
     return this.reservationsRepository.findOne({ _id });
   }
 
   update(_id: string, updateReservationDto: UpdateReservationDto) {
-    console.log(
+    this.logger.log(
       `Called update reservation service: id - ${_id} update - ${JSON.stringify(
         updateReservationDto,
       )}`,
