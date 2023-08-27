@@ -12,13 +12,10 @@ async function bootstrap() {
     transport: Transport.TCP,
     options: {
       host: PAYMENT_SERVICE,
-      port: configService.get('PAYMENTS_HTTP_PORT'),
+      port: configService.get('PAYMENTS_TCP_PORT'),
     },
   });
   app.useLogger(app.get(Logger));
-  const port = configService.get('PAYMENTS_HTTP_PORT');
-  await app.listen(port, () => {
-    console.log(`🚀 Payment service listening at http://localhost:${port}`);
-  });
+  await app.startAllMicroservices();
 }
 bootstrap();

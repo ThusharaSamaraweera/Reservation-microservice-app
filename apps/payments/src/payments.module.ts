@@ -11,7 +11,7 @@ import { LoggerModule } from '@app/common';
     ConfigModule.forRoot({
       isGlobal: true,
       validationSchema: Joi.object({
-        PAYMENTS_HTTP_PORT: Joi.number().required(),
+        PAYMENTS_TCP_PORT: Joi.number().required(),
         STRIPE_SECRET_KEY: Joi.string().required(),
       }),
     }),
