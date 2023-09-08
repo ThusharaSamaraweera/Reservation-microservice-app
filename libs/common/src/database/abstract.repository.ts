@@ -23,7 +23,7 @@ export abstract class AbstractRepository<TDocument extends AbstractDocument> {
       this.logger.warn(`Document not found: ${JSON.stringify(filterQuery)}`);
       throw new NotFoundException('Document not found');
     }
-
+    this.logger.log(`Found document: ${JSON.stringify(document)}`);
     return document;
   }
 
