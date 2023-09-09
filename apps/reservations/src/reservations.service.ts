@@ -15,12 +15,15 @@ export class ReservationsService {
   ) {}
 
   async create(createReservationDto: CreateReservationDto, userId: string) {
-    this.logger.log('Creating reservation');
+    this.logger.log(
+      `Creating reservation ${JSON.stringify(createReservationDto)} for user ${userId}`,
+    );
     return this.paymentService.send('create_charge', createReservationDto.charge).pipe(
-      map((respose) => {
-        this.logger.log(`Creating reservation for user ${createReservationDto?.invoiceId}`);
+      map((response) => {
+        this.logger.log(`Creating reservation:  invoice id- ${response?.id}`);
         return this.reservationsRepository.create({
           ...createReservationDto,
+          invoiceId: response.id,
           timestamp: new Date(),
           userId,
         });

@@ -11,16 +11,17 @@ export class PaymentsService {
   private readonly logger = new Logger(PaymentsService.name);
   constructor(private readonly configService: ConfigService) {}
 
-  async createCharge({ card, amount }: CreateChargeDto) {
+  async createCharge({ amount }: CreateChargeDto) {
+    // Note - this is needed for production
     // const paymentMethod = await this.stripe.paymentMethods.create({
     //   type: '',
     //   card,
     // });
 
     // this.logger.log(`Payment method created ${paymentMethod.id}`);
-
+    this.logger.log(`Creating payment intent`);
     const paymentIntent = await this.stripe.paymentIntents.create({
-      payment_method: 'pm_card_visa',
+      payment_method: 'pm_card_visa', // Testing purposes
       amount: amount * 100,
       confirm: true,
       currency: 'usd',
