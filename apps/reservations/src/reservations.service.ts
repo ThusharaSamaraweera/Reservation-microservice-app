@@ -5,7 +5,7 @@ import { ReservationsRepository } from './reservations.repository';
 
 @Injectable()
 export class ReservationsService {
-  private readonly logger: Logger;
+  private readonly logger: Logger = new Logger(ReservationsService.name);
   constructor(private readonly reservationsRepository: ReservationsRepository) {}
 
   create(createReservationDto: CreateReservationDto, userId: string) {
