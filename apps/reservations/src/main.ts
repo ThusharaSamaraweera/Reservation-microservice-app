@@ -17,7 +17,11 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
   const port = configService.get('RESERVATION_HTTP_PORT');
   await app.listen(port, () => {
-    console.log(`🚀 Listening at http://localhost:${port}/reservations`);
+    console.log(
+      `🚀 Reservations microservice is listening on ${configService.get(
+        'RESERVATION_HTTP_PORT',
+      )} (HTTP)`,
+    );
   });
 }
 bootstrap();

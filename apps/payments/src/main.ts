@@ -17,5 +17,10 @@ async function bootstrap() {
   });
   app.useLogger(app.get(Logger));
   await app.startAllMicroservices();
+  console.log(
+    `🚀 Payments microservice is listening on ${PAYMENT_SERVICE}:${configService.get(
+      'PAYMENTS_TCP_PORT',
+    )} (TCP)`,
+  );
 }
 bootstrap();
