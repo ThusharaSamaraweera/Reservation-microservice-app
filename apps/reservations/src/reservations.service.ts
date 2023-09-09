@@ -1,20 +1,31 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 import { CreateReservationDto } from './dto/create-reservation.dto';
 import { UpdateReservationDto } from './dto/update-reservation.dto';
 import { ReservationsRepository } from './reservations.repository';
+import { PAYMENT_SERVICE } from '@app/common';
+import { ClientProxy } from '@nestjs/microservices';
+import { map } from 'rxjs';
 
 @Injectable()
 export class ReservationsService {
   private readonly logger: Logger = new Logger(ReservationsService.name);
-  constructor(private readonly reservationsRepository: ReservationsRepository) {}
+  constructor(
+    private readonly reservationsRepository: ReservationsRepository,
+    @Inject(PAYMENT_SERVICE) private readonly paymentService: ClientProxy,
+  ) {}
 
-  create(createReservationDto: CreateReservationDto, userId: string) {
-    this.logger.log(`Creating reservation for user ${createReservationDto?.invoiceId}`);
-    return this.reservationsRepository.create({
-      ...createReservationDto,
-      timestamp: new Date(),
-      userId,
-    });
+  async create(createReservationDto: CreateReservationDto, userId: string) {
+    this.logger.log('Creating reservation');
+    return this.paymentService.send('create_charge', createReservationDto.charge).pipe(
+      map((respose) => {
+        this.logger.log(`Creating reservation for user ${createReservationDto?.invoiceId}`);
+        return this.reservationsRepository.create({
+          ...createReservationDto,
+          timestamp: new Date(),
+          userId,
+        });
+      }),
+    );
   }
 
   findAll() {
