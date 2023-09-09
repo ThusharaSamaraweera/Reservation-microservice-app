@@ -1,8 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 
 @Injectable()
 export class NotificationsService {
+  private readonly logger: Logger = new Logger(NotificationsService.name);
   async notifyEmail(email: string, message: string) {
-    console.log(`Sending email to ${email} with message: ${message}`);
+    this.logger.log(`Sending email to ${email} with message ${message}`);
   }
 }
