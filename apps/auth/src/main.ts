@@ -28,7 +28,11 @@ async function bootstrap() {
   await app.startAllMicroservices(); // start the microservice
   const port = configService.get('AUTH_HTTP_PORT');
   await app.listen(port, () => {
-    console.log(`🚀 Auth service listening at http://localhost:${port}`);
+    console.log(
+      `🚀 Auth microservice is listening on ${AUTH_SERVICE}:${configService.get(
+        'AUTH_TCP_PORT',
+      )} (TCP) and ${AUTH_SERVICE}:${configService.get('AUTH_HTTP_PORT')} (HTTP)`,
+    );
   });
 }
 bootstrap();
